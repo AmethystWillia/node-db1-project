@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const Accounts = require('./accounts-model');
-//const {  } = require('./accounts-middleware);
+const { checkAccountId, checkAccountPayload } = require('./accounts-middleware');
 
 router.get('/', (req, res, next) => {
   Accounts.getAll()
@@ -12,12 +12,20 @@ router.get('/', (req, res, next) => {
     });
 })
 
-router.get('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.get('/:id', checkAccountId, (req, res) => {
+  res.status(200).json(req.account);
 })
 
-router.post('/', (req, res, next) => {
-  // DO YOUR MAGIC
+router.post('/', checkAccountPayload, (req, res, next) => {
+  const { name, budget } = req.body;
+
+  Accounts.create({ name, budget })
+    .then(acc => {
+      res.status(201).json(acc);
+    })
+    .catch(err => {
+      next(err);
+    });
 })
 
 router.put('/:id', (req, res, next) => {

@@ -6,7 +6,8 @@ const getAll = () => {
 
 const getById = id => {
   return db('accounts')
-    .where({ id: id });
+    .where('id', id)
+    .first();
 }
 
 const create = async ({ name, budget }) => {
