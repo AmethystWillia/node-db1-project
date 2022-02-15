@@ -28,8 +28,16 @@ router.post('/', checkAccountPayload, (req, res, next) => {
     });
 })
 
-router.put('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.put('/:id', checkAccountId, checkAccountPayload, (req, res, next) => {
+  const { id } = req.params;
+
+  Accounts.updateById(id, req.body)
+    .then(acc => {
+      res.status(200).json(acc);
+    })
+    .catch(err => {
+      next(err);
+    })
 });
 
 router.delete('/:id', checkAccountId, (req, res, next) => {
@@ -45,8 +53,8 @@ router.delete('/:id', checkAccountId, (req, res, next) => {
     })
 })
 
-router.use((err, req, res, next) => { // eslint-disable-line
-  // DO YOUR MAGIC
-})
+// router.use((err, req, res, next) => { // eslint-disable-line
+//   // DO YOUR MAGIC
+// })
 
 module.exports = router;
