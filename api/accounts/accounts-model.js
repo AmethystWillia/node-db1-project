@@ -37,7 +37,7 @@ const deleteById = async (id) => {
   let result = await getById(id);
 
   await db('accounts')
-    .where({ id: id })
+    .where('id', id)
     .del();
 
     return {result};
